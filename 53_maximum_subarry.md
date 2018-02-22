@@ -1,6 +1,6 @@
 ## Maximum Subarray
 ##### 2018年02月08日17:24:09
-##### 这个题目深感无力.......
+##### 这个题目深感无力.......Kadane算法
 ***
 ### 题目
 >Find the contiguous subarray within an array (containing at least one number) which has the largest sum.  
