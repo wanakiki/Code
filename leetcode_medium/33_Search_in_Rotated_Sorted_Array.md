@@ -6,7 +6,7 @@
 >Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.  
 (i.e., 0 1 2 4 5 6 7 might become 4 5 6 7 0 1 2).  
 You are given a target value to search. If found in the array return its index, otherwise return -1.  
-You may assume no duplicate exists in the array.
+You may assume no duplicate exists in the array.  
 假设按照升序排列的数组在预先未知的某个关键点上旋转。  
 （即0 1 2 4 5 6 7可能变成4 5 6 7 0 1 2）。  
 你会得到一个目标值来搜索。如果在数组中发现它返回其索引，否则返回-1。  
