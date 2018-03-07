@@ -33,7 +33,8 @@ while(sum){
 
 ## 3.代码
 因为没有很好的办法，所以仅写了第一种处理方式。实现时出现了部分问题，由于是递归的细节处理，没有单独列出，直接注释。
-```c#include <stdio.h>
+```c
+#include <stdio.h>
 #include<string.h>
 #include<ctype.h>
 #include<stdlib.h>
