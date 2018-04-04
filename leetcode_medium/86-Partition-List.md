@@ -53,3 +53,27 @@ struct ListNode* partition(struct ListNode* head, int x) {
         return head;
   }
   ```
+  
+  ##### 2018-04-05 00:13:41
+  刚看到的c++一次遍历写法，看一下 顺便了解c++怎么开辟。
+  ```cpp
+  class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        ListNode left(0), right(0);
+        ListNode *l = &left, *r = &right;
+
+        while(head){
+            ListNode* & ref = head->val < x ? l : r;
+            ref->next = head;
+            ref = ref->next;
+            
+            head = head->next;
+        }
+        l->next = right.next;
+        r->next = NULL;
+        return left.next;
+    }
+};
+```
+###2018-04-05 00:13:312018-04-05 00:13:342018-04-05 00:13:37
