@@ -7,6 +7,7 @@ Given preorder and inorder traversal of a tree, construct the binary tree.
 
 Note:
 You may assume that duplicates do not exist in the tree.
+
 给定树的前序和中序，构造二叉树。  
 注意：
 您可能会认为树中不存在重复项。
