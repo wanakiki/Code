@@ -27,7 +27,7 @@ Explanation: As one shortest transformation is "hit" -> "hot" -> "dot" -> "dog" 
 return its length 5.
 ```
 Example 2:
-
+```
 Input:
 beginWord = "hit"
 endWord = "cog"
