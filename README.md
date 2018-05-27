@@ -8,3 +8,11 @@ emmmmm 先在这里立个flag，打印店小哥的自我修养要开始着手了
 windows test
 
 manjaro test
+
+生成ssh秘钥
+ssh-add 添加私钥
+公钥复制到github
+连接github ssh -T git@github.com
+git --config 设置email user
+
+
