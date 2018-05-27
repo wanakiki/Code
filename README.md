@@ -6,3 +6,5 @@ emmmmm之前修改了一下，现在用ssh提交  应该不用输入密码了吧
 emmmmm 先在这里立个flag，打印店小哥的自我修养要开始着手了！！！
 
 windows test
+
+manjaro test
