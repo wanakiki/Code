@@ -31,6 +31,25 @@ Note:
 没有分析 做了一个小时没做出来 就这样
 
 ## 示例代码
+超时代码
+```cpp
+class Solution {
+public:
+    void rotate(vector<int>& nums, int k) {
+        int len = nums.size(),i;
+        while(k){
+            int temp=nums[len-1] ;
+            for(i=len-1;i>0;i--){
+                nums[i]=nums[i-1];
+            }
+            nums[i]=temp;
+            k--;
+        }
+        return ;
+    }
+};
+```
+替换法，我开始的想法，但是因为解决不了循环最后不想做了...不过今天又想起来了，长度可以被k整除的话，就会出现环，这时候就要注意怎么去解决重合的问题，但是如果不整除就不会有了。
 ```cpp
  class Solution 
     {
