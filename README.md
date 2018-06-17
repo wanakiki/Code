@@ -7,3 +7,5 @@ emmmmm 先在这里立个flag，打印店小哥的自我修养要开始着手了
 
 windows test
 atom test 2018-05-08 23:57:36
+
+vscode的GitHub操作还是很简单的
