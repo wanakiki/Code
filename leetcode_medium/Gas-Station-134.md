@@ -78,3 +78,23 @@ public:
 };
 ```
 写着还算简单但是运行很慢....
+***
+2018年7月22日 更新新解法：
+C++:
+```cpp
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int total = 0, sum = 0, start = 0;
+        for (int i = 0; i < gas.size(); ++i) {
+            total += gas[i] - cost[i];
+            sum += gas[i] - cost[i];
+            if (sum < 0) {
+                start = i + 1;
+                sum = 0;
+            }
+        }
+        return (total < 0) ? -1 : start;
+    }
+};
+```
