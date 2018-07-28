@@ -53,7 +53,7 @@ public:
     bool helper(long long num_l1, long long num_l2, string num, int len, int start){
         if(len == start)
             return true;
-        for(int l3 = 1; l3 <= len -start; l3++){   
+        for(int l3 = 1; l3 <= len -start; l3++){  
              //注意这里是小于等于
             string num3 = num.substr(start, l3);
             if(l3 > 1 && num3[0] == '0')
@@ -61,7 +61,7 @@ public:
             long long num_l3 = atoi(num3.c_str());
             if(num_l1 + num_l2 == num_l3)
                 if(helper(num_l2, num_l3, num, len, start+l3))
-                    return true; 
+                    return true;
         }
         return false;
     }
