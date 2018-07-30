@@ -1,0 +1,8 @@
+C:\Users\2x3j\Desktop\vivid\Code\hard\candy.cpp: In function 'std::vector<int> stringToIntegerVector(std::string)':
+C:\Users\2x3j\Desktop\vivid\Code\hard\candy.cpp:47:35: error: 'stoi' was not declared in this scope
+         output.push_back(stoi(item));
+                                   ^
+C:\Users\2x3j\Desktop\vivid\Code\hard\candy.cpp: In function 'int main()':
+C:\Users\2x3j\Desktop\vivid\Code\hard\candy.cpp:59:35: error: 'to_string' was not declared in this scope
+         string out = to_string(ret);
+                                   ^
