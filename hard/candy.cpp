@@ -33,31 +33,17 @@ void trimRightTrailingSpaces(string &input) {
         return !isspace(ch);
     }).base(), input.end());
 }
-
-vector<int> stringToIntegerVector(string input) {
-    vector<int> output;
-    trimLeftTrailingSpaces(input);
-    trimRightTrailingSpaces(input);
-    input = input.substr(1, input.length() - 2);
-    stringstream ss;
-    ss.str(input);
-    string item;
-    char delim = ',';
-    while (getline(ss, item, delim)) {
-        output.push_back(stoi(item));
-    }
-    return output;
-}
-
 int main() {
     string line;
     while (getline(cin, line)) {
-        vector<int> ratings = stringToIntegerVector(line);
-
+        vector<int> ratings;
+        for(int i =0;i<line.size();i++){
+            if(line[i]!=',')
+                ratings.push_back(line[i]-'0');
+        }
         int ret = Solution().candy(ratings);
-
-        string out = to_string(ret);
-        cout << out << endl;
+        //string out = to_string(ret);
+        cout << ret << endl;
     }
     return 0;
 }

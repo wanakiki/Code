@@ -76,3 +76,31 @@ public:
     }
 };
 ```
+Python(2018年7月30日更新)
+```py
+class Solution(object):
+    def twoSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        length = len(nums)
+        for i in range(length):
+            for j in range(length):
+                if i != j and nums[i] + nums[j] == target:
+                    return [i,j]
+```
+上面这种方法是纯C的思路，运行了6000多毫秒，不过还好没有超时，用字典的做法是：
+
+```py
+class Solution(object):
+    def twoSum(self, nums, target):
+
+        hashtable = {}
+        for i in range(len(nums)):
+            if nums[i] in hashtable:
+                return hashtable[nums[i]], i
+            else:
+                hashtable[target - nums[i]] = i
+```
