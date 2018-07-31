@@ -18,7 +18,7 @@
   
 起初我的做法是定义一个极长的字符串temp用于返回，从字符串第一位开始，将每个字符串和它的下一个字符串进行比较，一个循环向temp存储一个值，发现不同在该位截断返回temp。方法虽然麻烦但是能实现。    
 
-之后发现由于是公共的前缀，**所以所有的字符串都有该部分**，我们可以直接复制第一个字符串到temp，与其他的字符串逐位比较，不同处截断，开始比较下一个，比较晚之后返回temp，方法简洁明了。
+之后发现由于是公共的前缀，**所以所有的字符串都有该部分**，我们可以直接复制第一个字符串到temp，与其他的字符串逐位比较，不同处截断，开始比较下一个，比较完之后返回temp，方法简洁明了。
 
 最后补充一下输入为空的特殊情况，当输入为空时，由于我们最终的做法是直接复制第一个字符串，所以我们的返回值也为空（null），但是理想结果是``""``，所以我们可以加一个判断，当字符串个数为零时我们直接返回``""``就可以解决这个问题。
 
@@ -40,4 +40,32 @@ for(int j=0;temp[j]!='\0';j++){
 return temp;
 }
 ```
-最后说一句，我尝试了几个方法，但是没能写出能够自定义测试案例的主函数，如果你写了出来谢谢指教。
+
+~~最后说一句，我尝试了几个方法，但是没能写出能够自定义测试案例的主函数，如果你写了出来谢谢指教。~~
+***
+2018年7月31日补充主函数：
+
+```c
+int main(){
+    int strsSize = 0;
+    printf("Input the number of strs:");
+    scanf("%d", &strsSize);
+
+    char ** strs;
+    strs = (char **) malloc (sizeof(char*) * strsSize);
+    for(int i = 0; i < strsSize; i++){
+        strs[i] = (char*) malloc(sizeof(char) * 11);
+    }
+    printf("Please input the strs, no longer than 10, divided by enter:\n");
+
+    char temp = 0;
+    for(int i = 0; i < strsSize; i++){
+        scanf("%s", strs[i]);
+        scanf("%c", &temp);
+    }
+    char *p = longestCommonPrefix(strs, strsSize);
+        printf("The result is: %s\n", p );
+}
+```
+
+可能这个时候自己还真的不会用malloc😂
