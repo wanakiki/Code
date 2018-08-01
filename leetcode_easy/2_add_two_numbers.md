@@ -167,4 +167,38 @@ struct ListNode * addTwoNumbers(struct ListNode *l1,struct ListNode *l2){
 ```
 感觉值得一提的是在这个函数里面temp的循环利用
 
+Python(2018年8月1日):
 
+```py
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def addTwoNumbers(self, l1, l2):
+        result = ListNode(0)
+        temp = result
+        carry = 0
+        while (l1 != None or l2 != None or carry !=0):
+            sum = 0
+            if l1 != None:
+                sum+=l1.val
+                l1 = l1.next
+
+            if l2 != None:
+                sum+=l2.val
+                l2 = l2.next
+
+            if carry != 0:
+                sum+=carry
+
+            temp.next = ListNode(sum % 10)
+            temp = temp.next
+            carry = sum // 10
+
+        return result.next  
+```
+
+反序存放真的很容易处理🤔
