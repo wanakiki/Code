@@ -97,7 +97,7 @@ int romanToInt(char *s){
         num+=num_temp;
         break;
       }*/
-      
+
       if(change(s[i])==change(s[i+1])){
         num_temp+=temp;
         if(i==k-2)
@@ -126,4 +126,71 @@ int main()
   gets(Rome);
   printf("%d\n", romanToInt(Rome));
 }
+```
+
+Python(2018年8月2日):
+
+```py
+class Solution(object):
+    def romanToInt(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        slen = len(s)
+        nums= []
+        res = 0
+        for i in range(slen):
+            if s[i] == 'I':
+                nums.append(1)
+            elif s[i] == 'V':
+                nums.append(5)
+            elif s[i] == 'X':
+                nums.append(10)
+            elif s[i] == 'L':
+                nums.append(50)
+            elif s[i] == 'C':
+                nums.append(100)
+            elif s[i] == 'D':
+                nums.append(500)
+            elif s[i] == 'M':
+                nums.append(1000)
+        for i in range(slen -1):
+            if(nums[i] >= nums[i+1]):
+                res += nums[i]
+            else:
+                res -= nums[i]
+        res += nums[-1] # 加上最后一个元素
+        return res
+```
+
+另一种做法，使用了字典:
+
+```py
+class Solution(object):
+    def romanToInt(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        lookup_dict = {
+            'I': 1,
+            'V': 5,
+            'X': 10,
+            'L': 50,
+            'C': 100,
+            'D': 500,
+            'M': 1000
+        }
+        previous = 0
+        running_total = 0
+
+        for i in range(len(s)-1, -1, -1):
+            initial_value = lookup_dict[s[i]]
+            if initial_value < previous:
+                running_total -= initial_value
+            else:
+                running_total += initial_value
+            previous = initial_value
+        return running_total
 ```
