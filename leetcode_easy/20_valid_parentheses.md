@@ -46,3 +46,21 @@ bool isValid(char* s) {
         return true;
 }
 ```
+
+Python3同样是使用栈的思路（2018年8月3日）：
+
+```py
+class Solution:
+    def isValid(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+        stack, p_map = [], {')':'(', '}':'{', ']':'['}
+        for c in s:
+            if c not in p_map:
+                stack.append(c)
+            elif not stack or p_map[c] != stack.pop():
+                return False
+        return not stack
+```
