@@ -3,7 +3,7 @@
 测试一下本地的...
 emmmmm之前修改了一下，现在用ssh提交  应该不用输入密码了吧  
 其实 赶脚自己开始要慢慢地改变啦
-emmmmm 先在这里立个flag，打印店小哥的自我修养要开始着手了！！！
+~~emmmmm 先在这里立个flag，打印店小哥的自我修养要开始着手了！！！~~都F了一年了
 
 windows test
 <<<<<<< HEAD
@@ -20,7 +20,4 @@ ssh-add 添加私钥
 连接github ssh -T git@github.com
 git --config 设置email user
 
-
->>>>>>> 3b2d9ee9bb0db6e9d79bce8e1da8b83311acf7f1
-
-emm
+（VSCode的git挺好用的，再一次发出了这个声音😂）
