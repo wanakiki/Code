@@ -8,7 +8,6 @@ using namespace std;
 int t, M, N, R, K, T;
 int hp[5], strength[5];
 class monster;
-class city;
 
 //时间类
 class mytime
@@ -31,7 +30,7 @@ class mytime
             minute = 0;
             hour += 1;
         }
-        if ((hour * 6 + minute) > T)
+        if ((hour * 60 + minute) > T)
             return true;
         else
             return false;
@@ -78,6 +77,8 @@ class sword : public weapon
     }
     void info()
     {
+        if(attack <= 0)
+            return ;
         printf("sword(%d)", attack);
     }
 
@@ -105,6 +106,8 @@ class arrow : public weapon
     }
     void info()
     {
+        if(time <= 0)
+            return ;
         printf("arrow(%d)", time);
     }
 
@@ -160,7 +163,11 @@ class monster
         }
         arrow_kill = false;
     }
-
+    void win_hp(int n){
+        Mytime.get_time();
+        info();
+        printf("earned %d elements for his headquarter\n", n);
+    }
     void die(int n)
     {
         if (arrow_kill)
@@ -178,12 +185,7 @@ class monster
             return false;
     }
 
-    void win_hp(int n, int hp_win){
-        Mytime.get_time();
-        info();
-        printf("earned %d elements for his headquarter\n",hp_win);
-    }
-    virtual void strike(monster *aim, int n, int hp_win)
+    virtual void strike(monster *aim, int n)
     {
         if (whether_die() || aim->whether_die())
         {
@@ -207,8 +209,8 @@ class monster
         aim->info();
         printf("in city %d ", n);
         info_s();
-        if (aim->monster_hp >= 0)
-            aim->strike_back(this, n, hp_win);
+        if (aim->monster_hp > 0)
+            aim->strike_back(this, n);
         else
         {
             //杀死狮子
@@ -216,12 +218,8 @@ class monster
                 monster_hp += aim_hp;
         }
 
-        if(aim -> whether_die()){
-            aim -> die(n);
-            win_hp(n, hp_win);
-        }
     }
-    virtual void strike_back(monster *aim, int n, int hp_win)
+    virtual void strike_back(monster *aim, int n )
     {
         int aim_hp = aim->monster_hp;
         int temp = 0;
@@ -246,10 +244,6 @@ class monster
             monster_hp += aim_hp;
         }
 
-        if (aim->whether_die()){
-            aim->die(n);
-            win_hp(n, hp_win);
-        }
     }
 
     //名称
@@ -275,12 +269,12 @@ class monster
         Mytime.get_time();
         info();
         cout << "has ";
-        if (weapons[2])
+        if (weapons[2]!= NULL)
         {
             weapons[2]->info();
             report_num++;
         }
-        if (weapons[1])
+        if (weapons[1] != NULL)
         {
             if (report_num)
             {
@@ -289,14 +283,16 @@ class monster
             weapons[1]->info();
             report_num++;
         }
-        if (weapons[0])
+        if (weapons[0] != NULL)
         {
+            if(weapons[0] -> attack > 0){
             if (report_num)
             {
                 cout << ",";
             }
             weapons[0]->info();
             report_num++;
+            }
         }
         if (report_num == 0)
         {
@@ -403,7 +399,7 @@ class wolf : public monster
     }
     void add_step() {}
 
-    void strike(monster *aim, int n, int hp_win)
+    void strike(monster *aim, int n)
     {
         if (whether_die())
         {
@@ -430,22 +426,17 @@ class wolf : public monster
             aim->info();
             printf("in city %d ", n);
             info_s();
-            if (aim->monster_hp >= 0)
-                aim->strike_back(this, n, hp_win);
+            if (aim->monster_hp > 0)
+                aim->strike_back(this, n);
             else
             {
                 //杀死狮子
                 if (aim->name[0] == 'l')
                     monster_hp += aim_hp;
             }
-
-            if (aim->whether_die()){
-                aim->die(n);
-                win_hp(n, hp_win);
-            }
         }
 
-        if (!whether_die() && aim -> whether_die())
+        if (!whether_die() && aim->whether_die())
         {
             for (int i = 0; i < 3; i++)
             {
@@ -458,7 +449,7 @@ class wolf : public monster
         }
     }
 
-    void strike_back(monster *aim, int n, int hp_win)
+    void strike_back(monster *aim, int n)
     {
         int aim_hp = aim->monster_hp;
         int temp = 0;
@@ -481,12 +472,6 @@ class wolf : public monster
         if (aim->whether_die() && aim->name[0] == 'l')
         {
             monster_hp += aim_hp;
-        }
-
-        if (aim->whether_die())
-        {
-            aim->die(n);
-            win_hp(n, hp_win);
         }
 
         if (aim->whether_die())
@@ -516,7 +501,7 @@ class lion : public monster
         printf("Its loyalty is %d\n", loyalty);
     }
     void add_step() {}
-    void strike(monster *aim, int n,  int hp_win)
+    void strike(monster *aim, int n)
     {
         if (whether_die() || aim->whether_die())
         {
@@ -540,9 +525,9 @@ class lion : public monster
         aim->info();
         printf("in city %d ", n);
         info_s();
-        if (aim->monster_hp >= 0)
+        if (aim->monster_hp > 0)
         {
-            aim->strike_back(this, n, hp_win);
+            aim->strike_back(this, n);
             loyalty -= K;
         }
         else
@@ -551,16 +536,9 @@ class lion : public monster
             if (aim->name[0] == 'l')
                 monster_hp += aim_hp;
         }
-
-        if (aim->whether_die())
-        {
-            aim->die(n);
-            win_hp(n, hp_win);
-        }
-
     }
 
-    void strike_back(monster *aim, int n, int hp_win)
+    void strike_back(monster *aim, int n)
     {
         int aim_hp = aim->monster_hp;
         int temp = 0;
@@ -588,12 +566,6 @@ class lion : public monster
         {
             loyalty -= K;
         }
-
-        if (aim->whether_die())
-        {
-            aim->die(n);
-            win_hp(n, hp_win);
-        }
     }
 };
 
@@ -617,7 +589,7 @@ class iceman : public monster
         }
         else
         {
-            weapons[temp] = new sword(int(strength[0] * 0.2));
+            weapons[temp] = new sword(int(strength[2] * 0.2));
         }
         Mytime.get_time();
         info();
@@ -710,7 +682,7 @@ class dragon : public monster
         printf("Its morale is %.2f\n", morale);
     }
 
-    void strike(monster *aim, int n, int hp_win)
+    void strike(monster *aim, int n)
     {
         if (whether_die())
         {
@@ -737,9 +709,9 @@ class dragon : public monster
             aim->info();
             printf("in city %d ", n);
             info_s();
-            if (aim->monster_hp >= 0)
+            if (aim->monster_hp > 0)
             {
-                aim->strike_back(this, n, hp_win);
+                aim->strike_back(this, n);
                 morale -= 0.2;
             }
             else
@@ -751,11 +723,9 @@ class dragon : public monster
             }
         }
 
-        if (aim->whether_die())
-        {
-            aim->die(n);
+        if(aim -> whether_die()){
+            aim -> die(n);
         }
-
         //判断是否欢呼（因为自己也有可能被反击致死
         if (morale >= 0.8 && monster_hp >= 0)
         {
@@ -763,13 +733,9 @@ class dragon : public monster
             info();
             printf("yelled in city %d\n", n);
         }
-
-        if(aim -> whether_die()){
-            win_hp(n, hp_win);
-        }
     }
 
-    void strike_back(monster *aim, int n, int hp_win)
+    void strike_back(monster *aim, int n)
     {
         int aim_hp = aim->monster_hp;
         int temp = 0;
@@ -800,12 +766,6 @@ class dragon : public monster
         else
         {
             morale -= 0.2;
-        }
-
-        if (aim->whether_die())
-        {
-            aim->die(n);
-            win_hp(n, hp_win);
         }
     }
 };
@@ -1223,7 +1183,140 @@ void fighting(city *citys)
         if (citys[i].city_monsters[1] && citys[i].city_monsters[0])
         {
             //cout<<"have fight"<<endl;
-            citys[i].city_monsters[citys[i].flag]->strike(citys[i].city_monsters[!citys[i].flag], i, citys[i].city_hp);
+            if(citys[i].city_monsters[!citys[i].flag] -> name[0] == 'w' && citys[i].city_monsters[citys[i].flag] -> whether_die()){
+                for (int j = 0; j < 3; j++)
+                {
+                    //cout<<"start"<<endl;
+                    if (citys[i].city_monsters[!citys[i].flag]->weapons[j] == NULL && citys[i].city_monsters[citys[i].flag]->weapons[j] != NULL)
+                    {
+                        citys[i].city_monsters[!citys[i].flag]->weapons[j] = citys[i].city_monsters[citys[i].flag]->weapons[j];
+                        citys[i].city_monsters[citys[i].flag]->weapons[j] = NULL;
+                    }
+                }
+            }
+            citys[i].city_monsters[citys[i].flag]->strike(citys[i].city_monsters[!citys[i].flag], i);
+            if(citys[i].city_monsters[citys[i].flag] -> name[0] == 'd'){
+                if(citys[i].flag == 1 ){
+                    if(citys[i].city_monsters[1] -> monster_hp <= 0){
+                    citys[i].city_monsters[1] -> die(i);
+                    citys[i].city_monsters[0] -> win_hp(citys[i].city_hp);
+                    }
+                    if(citys[i].city_monsters[0] -> whether_die()){
+                        citys[i].city_monsters[1] -> win_hp(citys[i].city_hp);
+                    }
+                }
+                else if (citys[i].flag == 0){
+                    if(citys[i].city_monsters[0] -> monster_hp <= 0){
+                    citys[i].city_monsters[0] -> die(i);
+                    citys[i].city_monsters[1] -> win_hp(citys[i].city_hp);
+                    }
+                    if(citys[i].city_monsters[1] -> whether_die()){
+                        citys[i].city_monsters[0] -> win_hp(citys[i].city_hp);
+                    }
+                }
+
+            }
+            else{
+                if (citys[i].city_monsters[1]->monster_hp <= 0)
+                {
+                    citys[i].city_monsters[1]->die(i);
+                    citys[i].city_monsters[0] -> win_hp(citys[i].city_hp);
+                }
+                if (citys[i].city_monsters[0]->monster_hp <= 0)
+                {
+                    citys[i].city_monsters[0]->die(i);
+                    citys[i].city_monsters[1] -> win_hp(citys[i].city_hp);
+                }
+            }
+            
+
+            //换旗
+            if (!citys[i].city_monsters[1]->whether_die() && citys[i].city_monsters[0]->whether_die())
+            { //包括用弓杀死的情况
+                if (commands[1].command_hp >= 8)
+                {
+                    commands[1].command_hp -= 8;
+                    citys[i].city_monsters[1]->monster_hp += 8;
+                }
+                if (citys[i].blue_flag == 0)
+                {
+                    citys[i].red_flag += 1;
+                }
+                else
+                {
+                    citys[i].blue_flag = 0;
+                    citys[i].red_flag = 1;
+                }
+            }
+            if (!citys[i].city_monsters[0]->whether_die() && citys[i].city_monsters[1]->whether_die())
+            {
+                if (commands[0].command_hp >= 8)
+                {
+                    commands[0].command_hp -= 8;
+                    citys[i].city_monsters[0]->monster_hp += 8;
+                }
+                if (citys[i].red_flag == 0)
+                {
+                    citys[i].blue_flag += 1;
+                }
+                else
+                {
+                    citys[i].red_flag = 0;
+                    citys[i].blue_flag = 1;
+                }
+            }
+
+
+            //换旗操作
+            if (citys[i].blue_flag == 2)
+            {
+                if (citys[i].flag == 1)
+                {
+                    Mytime.get_time();
+                    citys[i].blue_flag = 0;
+                    printf("blue flag raised in city %d\n", i);
+                    citys[i].original_flag = false;
+                }
+                if (citys[i].flag == 0)
+                {
+                    if (citys[i].original_flag)
+                    {
+                        Mytime.get_time();
+                        citys[i].blue_flag = 0;
+                        printf("blue flag raised in city %d\n", i);
+                        citys[i].original_flag = false;
+                    }
+                    else
+                    {
+                        citys[i].blue_flag = 0;
+                    }
+                }
+            }
+
+            if (citys[i].red_flag == 2)
+            {
+                if (citys[i].flag == 0)
+                {
+                    Mytime.get_time();
+                    citys[i].red_flag = 0;
+                    printf("red flag raised in city %d\n", i);
+                    citys[i].original_flag = false;
+                }
+                else
+                {
+                    if (citys[i].original_flag)
+                    {
+                        Mytime.get_time();
+                        citys[i].red_flag = 0;
+                        printf("red flag raised in city %d\n", i);
+                        citys[i].original_flag = false;
+                    }
+                    else
+                    {
+                        citys[i].red_flag = 0;
+                    }
+                }
+            }
         }
     }
 }
@@ -1252,57 +1345,57 @@ void fighting(city *citys)
 
 void reward(city *citys)
 {
-    for (int i = N; i >= 1; i--)
-    {
-        if (!(citys[i].city_monsters[0] && citys[i].city_monsters[1]))
-        {
-            continue;
-        }
-        //if(!citys[i].city_monsters[1] -> whether_die() && citys[i].city_monsters[0] -> whether_die() && !citys[i].city_monsters[0] -> arrow_kill){
-        if (!citys[i].city_monsters[1]->whether_die() && citys[i].city_monsters[0]->whether_die())
-        { //包括用弓杀死的情况
-            if (commands[1].command_hp >= 8)
-            {
-                commands[1].command_hp -= 8;
-                citys[i].city_monsters[1]->monster_hp += 8;
-            }
-            if (citys[i].blue_flag == 0)
-            {
-                citys[i].red_flag += 1;
-            }
-            else
-            {
-                citys[i].blue_flag = 0;
-                citys[i].red_flag = 1;
-            }
-        }
-    }
+    // for (int i = N; i >= 1; i--)
+    // {
+    //     if (!(citys[i].city_monsters[0] && citys[i].city_monsters[1]))
+    //     {
+    //         continue;
+    //     }
+    //     //if(!citys[i].city_monsters[1] -> whether_die() && citys[i].city_monsters[0] -> whether_die() && !citys[i].city_monsters[0] -> arrow_kill){
+    //     if (!citys[i].city_monsters[1]->whether_die() && citys[i].city_monsters[0]->whether_die())
+    //     { //包括用弓杀死的情况
+    //         if (commands[1].command_hp >= 8)
+    //         {
+    //             commands[1].command_hp -= 8;
+    //             citys[i].city_monsters[1]->monster_hp += 8;
+    //         }
+    //         if (citys[i].blue_flag == 0)
+    //         {
+    //             citys[i].red_flag += 1;
+    //         }
+    //         else
+    //         {
+    //             citys[i].blue_flag = 0;
+    //             citys[i].red_flag = 1;
+    //         }
+    //     }
+    // }
 
-    for (int i = 1; i <= N; i++)
-    {
-        if (!(citys[i].city_monsters[0] && citys[i].city_monsters[1]))
-        {
-            continue;
-        }
-        //if(!citys[i].city_monsters[0] -> whether_die() && citys[i].city_monsters[1] -> whether_die() && !citys[i].city_monsters[1] -> arrow_kill){
-        if (!citys[i].city_monsters[0]->whether_die() && citys[i].city_monsters[1]->whether_die())
-        {
-            if (commands[0].command_hp >= 8)
-            {
-                commands[0].command_hp -= 8;
-                citys[i].city_monsters[0]->monster_hp += 8;
-            }
-            if (citys[i].red_flag == 0)
-            {
-                citys[i].blue_flag += 1;
-            }
-            else
-            {
-                citys[i].red_flag = 0;
-                citys[i].blue_flag = 1;
-            }
-        }
-    }
+    // for (int i = 1; i <= N; i++)
+    // {
+    //     if (!(citys[i].city_monsters[0] && citys[i].city_monsters[1]))
+    //     {
+    //         continue;
+    //     }
+    //     //if(!citys[i].city_monsters[0] -> whether_die() && citys[i].city_monsters[1] -> whether_die() && !citys[i].city_monsters[1] -> arrow_kill){
+    //     if (!citys[i].city_monsters[0]->whether_die() && citys[i].city_monsters[1]->whether_die())
+    //     {
+    //         if (commands[0].command_hp >= 8)
+    //         {
+    //             commands[0].command_hp -= 8;
+    //             citys[i].city_monsters[0]->monster_hp += 8;
+    //         }
+    //         if (citys[i].red_flag == 0)
+    //         {
+    //             citys[i].blue_flag += 1;
+    //         }
+    //         else
+    //         {
+    //             citys[i].red_flag = 0;
+    //             citys[i].blue_flag = 1;
+    //         }
+    //     }
+    // }
 
     //收尸
     for (int i = 1; i <= N; i++)
@@ -1477,7 +1570,7 @@ int main()
             reward(citys);
             //cout<<"finish reward"<<endl;
 
-            change_flag(citys);
+            //change_flag(citys);
             //cout<<"finfish change_flag"<<endl;
 
             if (Mytime.is_end(10))
@@ -1508,11 +1601,8 @@ int main()
 奖励
 */
 
-/*
-2
-50 5 8 5 1000
-20 30 10 20 15
-5 5 5 5 5
-50 6 7 6 1000
-20 10 10 20 30
-5 5 5 5 5*/
+/* 
+1
+10000 20 1 1 1000
+80  80 80 80 80
+1 1 1 1 1*/
