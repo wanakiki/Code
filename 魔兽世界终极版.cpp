@@ -35,7 +35,7 @@ class mytime
         else
             return false;
     }
-} time;
+} Mytime;
 
 //司令部
 class command
@@ -164,7 +164,7 @@ class monster
     {
         if (arrow_kill)
             return;
-        time.get_time();
+        Mytime.get_time();
         info();
         printf("was killed in city %d\n", n);
     }
@@ -195,7 +195,7 @@ class monster
             delete weapons[0];
             weapons[0] = NULL;
         }
-        time.get_time();
+        Mytime.get_time();
         info();
         cout << "attacked ";
         aim->info();
@@ -224,7 +224,7 @@ class monster
             delete weapons[0];
             weapons[0] = NULL;
         }
-        time.get_time();
+        Mytime.get_time();
         info();
         cout << "fought back against ";
         aim->info();
@@ -256,7 +256,7 @@ class monster
     void info_w()
     {
         int report_num = 0;
-        time.get_time();
+        Mytime.get_time();
         info();
         cout << "has ";
         if (weapons[2])
@@ -299,7 +299,7 @@ class monster
         }
         if (aim->monster_hp <= 0)
         {
-            time.get_time();
+            Mytime.get_time();
             info();
             cout << "shot and killed ";
             aim->info();
@@ -308,7 +308,7 @@ class monster
         }
         else
         {
-            time.get_time();
+            Mytime.get_time();
             info();
             cout << "shot" << endl;
         }
@@ -345,7 +345,7 @@ class monster
                 }
                 if (monster_hp <= aim->monster_attack / 2 + temp)
                 {
-                    time.get_time();
+                    Mytime.get_time();
                     info();
                     cout << "used a bomb and killed ";
                     aim->info();
@@ -363,7 +363,7 @@ class monster
             }
             if (monster_hp <= aim->monster_attack + temp)
             {
-                time.get_time();
+                Mytime.get_time();
                 info();
                 cout << "used a bomb and killed ";
                 aim->info();
@@ -381,7 +381,7 @@ class wolf : public monster
     wolf(bool _colour, int _monster_id) : monster(_colour, hp[4], _monster_id, strength[4])
     {
         name = "wolf";
-        time.get_time();
+        Mytime.get_time();
         info();
         cout << "born" << endl;
     }
@@ -408,7 +408,7 @@ class wolf : public monster
                 delete weapons[0];
                 weapons[0] = NULL;
             }
-            time.get_time();
+            Mytime.get_time();
             info();
             cout << "attacked ";
             aim->info();
@@ -424,11 +424,11 @@ class wolf : public monster
             }
         }
 
-        if (!whether_die() && aim->whether_die())
+        if (!whether_die() && aim -> whether_die())
         {
             for (int i = 0; i < 3; i++)
             {
-                if (!weapons[i] && aim->weapons[i])
+                if (weapons[i] == NULL && aim->weapons[i] != NULL)
                 {
                     weapons[i] = aim->weapons[i];
                     aim->weapons[i] = NULL;
@@ -451,7 +451,7 @@ class wolf : public monster
             delete weapons[0];
             weapons[0] = NULL;
         }
-        time.get_time();
+        Mytime.get_time();
         info();
         cout << "fought back against ";
         aim->info();
@@ -483,7 +483,7 @@ class lion : public monster
     {
         name = "lion";
         loyalty = commands[_colour].command_hp;
-        time.get_time();
+        Mytime.get_time();
         info();
         cout << "born" << endl;
         printf("Its loyalty is %d\n", loyalty);
@@ -507,7 +507,7 @@ class lion : public monster
             delete weapons[0];
             weapons[0] = NULL;
         }
-        time.get_time();
+        Mytime.get_time();
         info();
         cout << "attacked ";
         aim->info();
@@ -540,7 +540,7 @@ class lion : public monster
             delete weapons[0];
             weapons[0] = NULL;
         }
-        time.get_time();
+        Mytime.get_time();
         info();
         cout << "fought back against ";
         aim->info();
@@ -579,7 +579,7 @@ class iceman : public monster
         {
             weapons[temp] = new sword(int(strength[0] * 0.2));
         }
-        time.get_time();
+        Mytime.get_time();
         info();
         cout << "born" << endl;
     }
@@ -624,7 +624,7 @@ class ninja : public monster
             weapons[temp2] = new sword(int(strength[1] * 0.2));
 
         //输出生成信息
-        time.get_time();
+        Mytime.get_time();
         info();
         cout << "born" << endl;
     }
@@ -664,7 +664,7 @@ class dragon : public monster
         {
             weapons[temp] = new sword(int(strength[0] * 0.2));
         }
-        time.get_time();
+        Mytime.get_time();
         info();
         cout << "born" << endl;
         printf("Its morale is %.2f\n", morale);
@@ -691,7 +691,7 @@ class dragon : public monster
                 delete weapons[0];
                 weapons[0] = NULL;
             }
-            time.get_time();
+            Mytime.get_time();
             info();
             cout << "attacked ";
             aim->info();
@@ -714,7 +714,7 @@ class dragon : public monster
         //判断是否欢呼（因为自己也有可能被反击致死
         if (morale >= 0.8 && monster_hp >= 0)
         {
-            time.get_time();
+            Mytime.get_time();
             info();
             printf("yelled in city %d\n", n);
         }
@@ -734,7 +734,7 @@ class dragon : public monster
             delete weapons[0];
             weapons[0] = NULL;
         }
-        time.get_time();
+        Mytime.get_time();
         info();
         cout << "fought back against ";
         aim->info();
@@ -778,14 +778,14 @@ class city
     {
         if (city_monsters[1])
         {
-            time.get_time();
+            Mytime.get_time();
             city_monsters[1]->info();
             printf("marched to city %d ", n);
             city_monsters[1]->info_s();
         }
         if (city_monsters[0])
         {
-            time.get_time();
+            Mytime.get_time();
             city_monsters[0]->info();
             printf("marched to city %d ", n);
             city_monsters[0]->info_s();
@@ -883,7 +883,7 @@ bool whether_run(monster *temp)
 
     if (temp->name[0] == 'l' && temp->loyalty <= 0)
     {
-        time.get_time();
+        Mytime.get_time();
         temp->info();
         cout << "run away" << endl;
         delete temp;
@@ -977,7 +977,7 @@ void forward(city *citys)
     //输出
     if (flag1)
     {
-        time.get_time();
+        Mytime.get_time();
         commands[1].store->info();
         cout << "reached red headquarter ";
         commands[1].store->info_s();
@@ -986,7 +986,7 @@ void forward(city *citys)
     }
     if (commands[1].num == 2)
     {
-        time.get_time();
+        Mytime.get_time();
         printf("red headquarter was taken\n");
     }
 
@@ -997,7 +997,7 @@ void forward(city *citys)
 
     if (flag0)
     {
-        time.get_time();
+        Mytime.get_time();
         commands[0].store->info();
         cout << "reached blue headquarter ";
         commands[0].store->info_s();
@@ -1006,10 +1006,10 @@ void forward(city *citys)
     }
     if (commands[0].num == 2)
     {
-        time.get_time();
+        Mytime.get_time();
         printf("blue headquarter was taken\n");
     }
-    //time.add_time(10); 前进之后不能加上时间
+    //Mytime.add_time(10); 前进之后不能加上时间
 }
 
 //判断是否胜利
@@ -1021,7 +1021,7 @@ bool victory(bool _case = true)
         flag = true;
         if (_case)
         {
-            time.get_time();
+            Mytime.get_time();
             printf("red headquarter was taken\n");
         }
     }
@@ -1030,7 +1030,7 @@ bool victory(bool _case = true)
         flag = true;
         if (_case)
         {
-            time.get_time();
+            Mytime.get_time();
             printf("blue headquarter was taken\n");
         }
     }
@@ -1053,7 +1053,7 @@ void get_hp(city *citys)
             continue;
         if (citys[i].city_monsters[1] != NULL && citys[i].city_monsters[0] == NULL)
         {
-            time.get_time();
+            Mytime.get_time();
             citys[i].city_monsters[1]->info();
             printf("earned %d elements for his headquarter\n", citys[i].city_hp);
             commands[1].command_hp += citys[i].city_hp;
@@ -1061,7 +1061,7 @@ void get_hp(city *citys)
         }
         if (citys[i].city_monsters[0] != NULL && citys[i].city_monsters[1] == NULL)
         {
-            time.get_time();
+            Mytime.get_time();
             citys[i].city_monsters[0]->info();
             printf("earned %d elements for his headquarter\n", citys[i].city_hp);
             commands[0].command_hp += citys[i].city_hp;
@@ -1074,7 +1074,7 @@ void command_report()
 {
     for (int i = 1; i >= 0; i--)
     {
-        time.get_time();
+        Mytime.get_time();
         printf("%d elements in ", commands[i].command_hp);
         if (i)
             cout << "red ";
@@ -1191,7 +1191,7 @@ void fighting(city *citys)
 //                 if (citys[i].city_monsters[!citys[i].flag]->whether_die())
 //                 {
 //                     citys[i].city_monsters[citys[i].flag]->loyalty += 0.2;
-//                     time.get_time();
+//                     Mytime.get_time();
 //                     citys[i].city_monsters[citys[i].flag] -> info();
 //                     printf("yelled in city %d\n", i);
 //                 }
@@ -1282,7 +1282,7 @@ void reward(city *citys)
         if (citys[i].city_monsters[0] == NULL && citys[i].city_monsters[1] != NULL)
         {
             commands[1].command_hp += citys[i].city_hp;
-            time.get_time();
+            Mytime.get_time();
             citys[i].city_monsters[1]->info();
             printf("earned %d elements for his headquarter\n", citys[i].city_hp);
             citys[i].city_hp = 0;
@@ -1290,7 +1290,7 @@ void reward(city *citys)
         if (citys[i].city_monsters[1] == NULL && citys[i].city_monsters[0] != NULL)
         {
             commands[0].command_hp += citys[i].city_hp;
-            time.get_time();
+            Mytime.get_time();
             citys[i].city_monsters[0]->info();
             printf("earned %d elements for his headquarter\n", citys[i].city_hp);
             citys[i].city_hp = 0;
@@ -1306,7 +1306,7 @@ void change_flag(city *citys)
         {
             if (citys[i].flag == 1)
             {
-                time.get_time();
+                Mytime.get_time();
                 citys[i].blue_flag = 0;
                 printf("blue flag raised in city %d\n", i);
                 citys[i].original_flag = false;
@@ -1315,7 +1315,7 @@ void change_flag(city *citys)
             {
                 if (citys[i].original_flag)
                 {
-                    time.get_time();
+                    Mytime.get_time();
                     citys[i].blue_flag = 0;
                     printf("blue flag raised in city %d\n", i);
                     citys[i].original_flag = false;
@@ -1331,7 +1331,7 @@ void change_flag(city *citys)
         {
             if (citys[i].flag == 0)
             {
-                time.get_time();
+                Mytime.get_time();
                 citys[i].red_flag = 0;
                 printf("red flag raised in city %d\n", i);
                 citys[i].original_flag = false;
@@ -1340,7 +1340,7 @@ void change_flag(city *citys)
             {
                 if (citys[i].original_flag)
                 {
-                    time.get_time();
+                    Mytime.get_time();
                     citys[i].red_flag = 0;
                     printf("red flag raised in city %d\n", i);
                     citys[i].original_flag = false;
@@ -1367,7 +1367,7 @@ int main()
             cin >> strength[i];
 
         printf("Case %d:\n", k);
-        time.refresh();
+        Mytime.refresh();
         commands[0].refresh();
         commands[1].refresh();
 
@@ -1381,45 +1381,45 @@ int main()
 
         while (1)
         {
-            if (time.is_end(0))
+            if (Mytime.is_end(0))
                 break;
             create_monster();
 
-            if (time.is_end(5))
+            if (Mytime.is_end(5))
             {
                 break;
             }
             run_away(citys);
 
-            if (time.is_end(5))
+            if (Mytime.is_end(5))
                 break;
 
             forward(citys);
 
-            if (victory(false) || time.is_end(10))
+            if (victory(false) || Mytime.is_end(10))
             {
                 break;
             }
 
             create_hp(citys);
 
-            if (time.is_end(10))
+            if (Mytime.is_end(10))
                 break;
             get_hp(citys);
 
-            if (time.is_end(5))
+            if (Mytime.is_end(5))
                 break;
             //放箭
             arrow_attack(citys);
             //cout<<"finish arrow_attack"<<endl;
 
-            if (time.is_end(3))
+            if (Mytime.is_end(3))
                 break;
             //评估炸弹
             bombing(citys);
             //cout<<"finish bombing"<<endl;
 
-            if (time.is_end(2))
+            if (Mytime.is_end(2))
                 break;
             //战斗
             fighting(citys);
@@ -1433,17 +1433,17 @@ int main()
             change_flag(citys);
             //cout<<"finfish change_flag"<<endl;
 
-            if (time.is_end(10))
+            if (Mytime.is_end(10))
                 break;
             //司令部报告
             command_report();
 
-            if (time.is_end(5))
+            if (Mytime.is_end(5))
                 break;
             //武士报告
             monster_report(citys);
 
-            if (time.is_end(5))
+            if (Mytime.is_end(5))
                 break;
             //循环结束
         }
