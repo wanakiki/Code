@@ -16,8 +16,9 @@ Example:
 
 Answer: 16
 Explanation: The perimeter is the 16 yellow stripes in the image below:
-![tupian](https://leetcode.com/static/images/problemset/island.png)
 ```
+
+![tupian](https://leetcode.com/static/images/problemset/island.png)
 
 ## 分析
 
