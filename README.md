@@ -21,3 +21,9 @@ ssh-add 添加私钥
 git --config 设置email user
 
 （VSCode的git挺好用的，再一次发出了这个声音😂）
+
+***
+
+## Hard
+
+32. Longest Valid Parentheses ❌暴力解法（未通过）
