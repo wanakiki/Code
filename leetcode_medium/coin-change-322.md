@@ -31,6 +31,8 @@ You may assume that you have an infinite number of each kind of coin.
 
 很明显，简单的贪心算法是不能完美解决这个问题的。我这里采用的是动态规划的方法，维护一个一维数组，数组中索引为i值表示总数为i时最少的钱币数。实现很简单，但是比较难想出来。
 
+第二个方法是比动态规划快得多的回溯，通过一个非常秀的剪枝大大优化了代码运行时间。
+
 ## 示例代码
 
 C++
@@ -52,3 +54,31 @@ public:
     }
 };
 ```
+
+```cpp
+class Solution {
+public:
+    int res = INT_MAX;  //全局结果
+    int coinChange(vector<int>& coins, int amount) {
+        if(!amount) return 0;
+        sort(coins.begin(), coins.end(), greater<int>());
+        helper(coins, 0, amount, 0);
+        return res == INT_MAX ? -1 : res;
+    }
+
+    void helper(vector<int>& coins, int now, int amount, int cur){
+        if(now >= coins.size()) return;
+        if(amount % coins[now] == 0){
+            res = min(res, cur + amount/coins[now]);
+            return ;
+        }
+
+        for(int i = amount/coins[now]; i >= 0; i--){
+            if(cur+i >= res - 1)    break;  //剪枝 可以放在循环外
+            helper(coins, now+1, amount-coins[now]*i, cur+i);
+        }
+    }
+};
+```
+
+当目前的硬币书大于等于当前所得到的最小的硬币数减一的时候，就不需要进行判断。
