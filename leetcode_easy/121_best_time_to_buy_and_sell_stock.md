@@ -26,7 +26,7 @@ In this case, no transaction is done, i.e. max profit = 0.
 ```c
 int maxProfit(int* prices, int pricesSize) {
     int max=0;
-for(int i=0;i<pricesSize-1;i++)
+    for(int i=0;i<pricesSize-1;i++)
     for(int j=i+1;j<pricesSize;j++){
         int temp=prices[j]-prices[i];
         if(temp>max)
@@ -49,6 +49,38 @@ int maxProfit(int* prices,int pricesSize){
 return max;
 }
 ```
+***
+2020年3月9日
+
+实践证明kadane算法在当时做过之后没有记住...
+
+重新做这个题目，想到的是动态规划的解法。题目可以转化为寻找最大连续子序列和的问题：
+
+1. 首先将数组中的每个元素与其之前的元素求差，保存为diff数组
+2. 初始化dp数组为0，并从第二个元素进行递归
+3. dp[i] = max(0, dp[i-1]+diff[i])，按此公式进行计算，并不断更新最大值max
+
+算法时间复杂度为O(n)，执行时间为8ms，击败了80%，但代码还是比较臃肿，有可以优化的地方。进行优化之后便能得到kadane算法。
+
+```cpp
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        vector<int> diff(prices.size(), 0);
+        vector<int> dp(prices.size(), 0);
+        int res = 0;
+        for(int i = 1; i < diff.size(); i++){
+            diff[i] = prices[i] - prices[i-1];
+        }
+        for(int i = 1; i < dp.size(); i++){
+            dp[i] = max(0, dp[i-1] + diff[i]);
+            res = max(dp[i], res);
+        }
+        return res;
+    }
+};
+```
+
 ## 122. Best Time to Buy and Sell Stock II
 ##### 2018年2月22日12:04:56
 ##### 贪心算法

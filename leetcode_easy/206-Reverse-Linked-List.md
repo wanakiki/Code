@@ -43,3 +43,100 @@ struct ListNode *reverseList(struct ListNode *head){
   return newhead;
 }
 ```
+
+***
+2020年3月2日更新
+
+### 笨方法递归
+
+重新做这个题目，最佳的递归做法还是没有立刻想起来，写了下面的做法，执行用了32ms。思路如下：
+
+递归的结果是返回新的链表头，递归基显然是遇到空指针或者当前节点的下一个节点为空（即链表尾部）。剩下的部分是如何对递归过程中经过的结点进行处理，因为递归结果会返回新的链表头，当前节点应该拼接到新的链表结构的最后位置，很容易想到的粗暴方法是直接遍历链表进行拼接。
+
+### 递归优化
+
+但很明显上述方法不能有效利用指针的特点，每处理一个节点都需要一次遍历列表。官方题解给出了更有效的解法，递归基不变，在处理每一个过程节点时，设有两个连续的节点l、r，过程如下（处理l）：
+
+1. 当前节点的下一个节点的next指向自身。因为原链表是递归处理的，当处理l时，r节点一定被提前处理过，而按照反转链表的目的，l节点应该作为r节点的next元素。
+2. 将l节点的next置空，因为第一步已经将l放到r的后面了，但原有的关系没变，二者形成了环，需要将l节点的next置空将环破坏。这也使l真正位于了链表的尾部。
+
+### 再优化（雾）
+
+仔细思考，上述步骤2是可以取消执行的，因为下一个递归处理节点的步骤1会覆盖当前节点的步骤2，除了原有头部节点。将步骤简化可以有第三种写法，此时需要一个全局变量，且需要辅助函数。虽然看起来没有第二种方法简单，但是每次处理节点都会少一次幅值。但最后的执行时间还是8ms。
+
+### 其他
+
+最后写了一种while循环遍历一次改变指向的方法，最后执行时间是12ms，更慢了。
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if(head == NULL || head->next == NULL)
+            return head;
+        ListNode* nextNode = reverseList(head->next);
+        ListNode* tmp = head;
+        tmp->next = NULL;
+        head = nextNode;
+        while(nextNode->next){
+            nextNode = nextNode->next;
+        }
+        nextNode->next = tmp;
+        return head;
+    }
+
+    // 递归
+    ListNode* reverseList2(ListNode* head) {
+        if(head == NULL || head->next == NULL)
+            return head;
+        ListNode* newHead = reverseList(head->next);
+        
+        head->next->next = head;
+        head->next = NULL;
+        return newHead;
+    }
+
+    // 简化
+    ListNode* res;
+    void helper(ListNode* head){
+        if(head->next == NULL){
+            res = head;
+            return ;
+        }
+        helper(head->next);
+        head->next->next = head;
+    }
+    ListNode* reverseList3(ListNode* head) {
+        if(!head || head->next == NULL)
+            return head;
+        helper(head);
+        head->next = NULL;  //需要特殊处理
+        return res;
+    }
+
+    // while循环
+    ListNode* reverseList4(ListNode* head) {
+        if(!head)
+            return head;
+        ListNode* cur = head->next;
+        head->next = NULL;
+        while(cur){
+            ListNode* tmp = cur->next;
+            cur->next = head;
+            head = cur;
+            cur = tmp;
+        }
+        return head;
+    }
+};
+
+
+```
