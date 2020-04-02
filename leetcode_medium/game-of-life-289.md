@@ -101,3 +101,54 @@ public:
     }
 };
 ```
+
+
+### 2020年4月2日
+
+事实证明做过的大部分题目都已经忘了，今天又遇到只是觉得很新奇完全忘了曾经做过这件事。在评论区看到了使用状态机思路解决问题的方法，同样是O(mn)的时间复杂度，代码稍微清晰了一点，但好像没有加二的办法精巧。
+
+实际上所有就地算法的解决方式都是在保持原信息不丢失的条件下在相同的空间内增加新的信息内容（下一状态是否存活）。
+
+```cpp
+class Solution {
+public:
+    int direction[8][2] = {{-1,-1},{-1, 0},{-1, 1}, {0, -1}, {0,1}, {1,-1}, {1,0}, {1,1}};
+    void gameOfLife(vector<vector<int>>& board) {
+        for(int i = 0; i < board.size(); i++)
+        for(int j = 0; j < board[0].size(); j++){
+            int sum = 0;
+            int next_i = 0, next_j = 0;
+
+            // 统计周围存活细胞数目
+            for(int k = 0; k < 8; k++){
+                next_i = i + direction[k][0];
+                next_j = j + direction[k][1];
+
+                // 越界处理
+                if(next_i < 0 || next_i == board.size() || next_j < 0 || next_j == board[0].size())
+                    continue;
+                sum += board[next_i][next_j] & 1;
+            }
+
+            // 根据当前状态进行修改，默认第二位为0 死亡状态，只需要考虑存活的情况
+            if(board[i][j]){
+                if(sum == 2 || sum == 3){
+                    board[i][j] |= 2;   // 第二位置1
+                }
+            }
+            else{
+                if(sum == 3){
+                    board[i][j] |= 2;
+                }
+            }
+        }
+
+        // 全盘更新
+        for(int i = 0; i < board.size(); i++)
+        for(int j = 0; j < board[0].size(); j++){
+            board[i][j] >>= 1;
+        }
+        return ;
+    }
+};
+```
