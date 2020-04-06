@@ -109,3 +109,80 @@ public:
     }
 };
 ```
+
+
+### 2020年4月4日
+
+两个DP获得左右最大高度，最后遍历一遍计算最终结果
+
+```cpp
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int res = 0;
+        vector<int> left_height(height.size(), 0);
+        vector<int> right_height(height.size(), 0);
+
+        // dp获取左右最大高度
+        int tmp = 0;
+        for(int i = 0; i < height.size(); i++){
+            if(height[i] > tmp)
+                tmp = height[i];
+            left_height[i] = tmp;
+        }
+        tmp = 0;
+        for(int i = height.size()-1; i >= 0; i--){
+            if(height[i] > tmp)
+                tmp = height[i];
+            right_height[i] = tmp;
+        }
+
+        // 遍历一次获得最终长度
+        int cur = 0;
+        for(int i = 0; i < height.size(); i++){
+            cur = min(left_height[i], right_height[i]);
+            if(cur > height[i])
+                res += cur - height[i];
+        }
+        return res;
+    }
+};
+```
+
+#### 单调栈
+
+题解区有很多人都在讨论用单调栈来解决这个问题，看了别人的讲解自己也来写一下关于单调栈的解法。
+
+双DP做法在计算最终结果的时候是计算每个坐标最多能盛放多少水，而单调栈的做法则是在维护栈的过程中如果发现在一个区间内能注水，那就在该区间倒上对应层数的水，实际过程中只需要遍历一次数组，计算水量的方式是计算宽和高的乘积。
+
+栈中保存的元素有两种选择：高度、坐标，为了知道两个柱体之间的距离，本题目当中需要将坐标放入栈中保存，用坐标在height数组中获取高度。具体步骤可拆分为：
+
+1. 判断栈是否为空，若为空则当前坐标压栈。
+2. 若不为空，则将当前高度与栈顶坐标对应高度相比较。
+3. 若大于栈顶元素，将栈顶元素弹出保存，判断栈是否为空，若为空则证明之前被弹出的元素为最后一个，栈中没有其他柱体能帮他接水，故应终止循环。若栈不为空，则取栈顶元素与当前遍历到的元素中较小的一个，计算新的水量。重复此过程直到栈空。
+4. 当前坐标压栈。
+
+```cpp
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int res = 0;
+        stack<int> stk; // 单调栈
+        for(int i = 0; i < height.size(); i++){
+            while(!stk.empty() && height[i] > height[stk.top()]){
+                int base = stk.top();
+                stk.pop();
+                if(stk.empty())
+                    break;
+
+                int h = min(height[stk.top()], height[i]) - height[base];
+                int distance = i - stk.top() - 1;       // 应以更高位置的距离进行计算
+                res += distance * h;
+            }
+            stk.push(i);
+        }
+        return res;
+    }
+};
+```
+
