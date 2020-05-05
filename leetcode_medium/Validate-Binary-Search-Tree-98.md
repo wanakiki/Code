@@ -63,3 +63,81 @@ public:
     }
 };
 ```
+
+### 2020年5月5日
+
+这个题目比较合理的解决办法是进行一次中序遍历，过程中记录当前节点的上一个节点，与之比较大小。中序遍历出的结果相当于整个二叉树垂直向下投影，若满足二叉搜索树的条件，遍历出的序列应该是单调递增的。
+
+普通的先序遍历加边界代码↓，没有使用超过整形范围的数值，多添加了两个布尔值变量来判断左右是否为无穷大，代码写得有点繁琐可以进行简化。
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool check(TreeNode* root, int left, int right, bool leftInf = true, bool rightInf = true){
+        if(!root)   return true;
+        if(leftInf && rightInf){
+            return check(root->left, left, root->val, true, false) && check(root->right, root->val, right, false, true);
+        }
+        else if(leftInf){
+            if(root->val >= right)  return false;
+            return check(root->left, left, root->val, true, false) && check(root->right, root->val, right, false, false);
+        }
+        else if(rightInf){
+            if(root->val <= left)   return false;
+            return check(root->left, left, root->val, false, false) && check(root->right, root->val, right, false, true);
+        }
+        else{
+            if(root->val <= left || root->val >= right)     return false;
+            return check(root->left, left, root->val, false, false) && check(root->right, root->val, right, false, false);
+        }
+    }
+    bool isValidBST(TreeNode* root) {
+        return check(root, 0, 0);   
+    }
+};
+```
+
+中序遍历做法，注意传递的参数为pre的引用，这个值需要一直更改，另外需要注意pre更改的位置。
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool check(TreeNode* root, TreeNode* &pre){
+        if(root == NULL)     return true;
+
+        // 如果左子树出现错误
+        if(!check(root->left, pre)){
+            return false;
+        }
+
+        if(pre!= NULL && pre->val >= root->val){
+            return false;
+        }
+
+        pre = root;
+        return check(root->right, pre);
+    }
+    bool isValidBST(TreeNode* root) {
+        TreeNode* pre = NULL;
+        return check(root, pre);
+    }
+};
+```
