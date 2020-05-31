@@ -68,3 +68,64 @@ bool isSymmetric(struct TreeNode* root) {
     return isSameTree(root,root2);
 }
 ```
+
+### 2020年5月31日
+
+C++做法，直接以根节点的两个子树进行搜索，对比镜像位置节点的值是否相同。需要注意左右两个子树的入栈方向不同。
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        if(!root)   return true;
+        stack<TreeNode*> stk1, stk2;
+
+        stk1.push(root->left);
+        stk2.push(root->right);
+
+        while(!stk1.empty() && !stk2.empty()){
+            int flag = 0;
+            if(stk1.top() == NULL){
+                stk1.pop();
+                flag++;
+            }
+            if(stk2.top() == NULL){
+                stk2.pop();
+                flag++;
+            }
+            if(flag == 2){
+                continue;
+            }
+            if(flag == 1){
+                break;
+            }
+
+            if(stk1.top()->val == stk2.top()->val){
+                TreeNode* cur_left = stk1.top();
+                TreeNode* cur_right = stk2.top();
+                stk1.pop();
+                stk2.pop();
+
+                stk1.push(cur_left->right);
+                stk1.push(cur_left->left);
+                stk2.push(cur_right->left);
+                stk2.push(cur_right->right);
+            }
+            else{
+                return false;
+            }
+        }
+
+        return stk1.empty() && stk2.empty();
+    }
+};
+```
