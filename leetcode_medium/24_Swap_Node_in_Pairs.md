@@ -37,3 +37,48 @@ struct ListNode* swapPairs(struct ListNode* head) {
     return head;
 }
 ```
+
+递推写法（2020年10月13日）
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        ListNode* cur = head;
+        ListNode* last;
+        bool flag = true;
+        while(cur && cur->next){
+            if(flag){
+                flag = false;
+                head = cur->next;
+                // 交换节点
+                ListNode* tmp = cur->next->next;
+                cur->next->next = cur;
+                cur->next = tmp;
+                last = cur;
+            }
+            else{
+                last->next = cur->next;
+                ListNode* tmp = cur->next->next;
+                cur->next->next = cur;
+                cur->next = tmp;
+                last = cur;
+            }
+            cur = cur->next;
+        }
+        return head;
+    }
+};
+```
+
+另外，在解决链表问题时，通过虚构一个头节点可以减少不必要的判断。
