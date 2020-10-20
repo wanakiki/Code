@@ -57,3 +57,59 @@ public:
     }
 };
 ```
+
+首先遍历链表，找到中间节点，之后将右半部分链表反转，之后遍历两部分链表，按照题目要求的顺序进行合并。
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+        if(head == NULL || head->next == NULL || head->next->next == NULL){
+            return ;
+        }
+        // 找到中间节点
+        ListNode* fast = head;
+        ListNode* slow = head;
+        while(fast && fast->next){
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+        // 反转链表
+        ListNode* cur = slow->next;
+        ListNode* tmp = cur->next;
+        slow->next = NULL;
+        cur->next = NULL;
+        while(tmp){
+            ListNode* last = cur;
+            cur = tmp;
+            tmp = cur->next;
+            cur->next = last;
+        }
+
+        // 后半段的头是cur
+        ListNode* left = head;
+        ListNode* right = cur;
+        while(left && right){
+            ListNode* l_next = left->next;
+            ListNode* r_next = right->next;
+            left->next = right;
+            right->next = l_next;
+
+            right = r_next;
+            left = l_next;
+        }
+        return ;
+    }
+};
+```
