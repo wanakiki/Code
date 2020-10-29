@@ -77,3 +77,41 @@ public:
 };
 ```
 代码很简单，还有一种更快的解决方式是设置sum为全局变量，但是个人觉得实际解决问题不方便应用，但是仔细考虑一下因为这个函数处在一个类内，完全可以将sum设置为类的成员变量加快解题速度。
+
+全局变量做法：
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int res = 0;
+    void dfs(TreeNode* root, int val){
+        val = val * 10 + root->val;
+        if(root->left == NULL && root->right == NULL){
+            res += val;
+            return ;
+        }
+        if(root->left){
+            dfs(root->left, val);
+        }
+        if(root->right){
+            dfs(root->right, val);
+        }
+    }
+    int sumNumbers(TreeNode* root) {
+        if(!root){
+            return 0;
+        }
+        dfs(root, 0);
+        return res;
+    }
+};
+```
