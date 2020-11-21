@@ -100,3 +100,90 @@ public:
 	}
 };
 ```
+
+
+#### 2020年11月21日
+
+如果想要完全按照题目的要求，使用常数空间来做这个题目的话，需要使用自底向上的归并排序做法。
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+        ListNode* newhead = new ListNode(0, head);
+        ListNode* cur = newhead;
+        int cur_len = 1;
+        int len = 0;
+        // 计算长度
+        while(head){
+            len++;
+            head = head->next;
+        }
+        for(cur_len = 1; cur_len < len; cur_len <<= 1){
+            ListNode* last = newhead;
+            ListNode* cur = newhead->next;
+            while(cur){
+                ListNode* head1 = cur;
+                ListNode* tmp1 = head1;
+                for(int i = 1; i < cur_len && tmp1->next; i++){
+                    tmp1 = tmp1->next;
+                }
+                ListNode* head2 = tmp1->next;
+                tmp1->next = nullptr;
+                tmp1 = head2;
+                for(int i = 1; i < cur_len && tmp1 && tmp1->next; i++){
+                    tmp1 = tmp1->next;
+                }
+                // 上面循环的终止条件有两种，tmp1本身为空，tmp1->next为空
+                ListNode* tmp2 = nullptr;
+                if(tmp1){
+                    tmp2 = tmp1->next;
+                    tmp1->next = nullptr;
+                }
+
+                ListNode* merged = mergeList(head1, head2);
+                last->next = merged;
+                while(last && last->next){
+                    last = last->next;
+                }
+                cur = tmp2;
+            }
+        }
+        return newhead->next;
+    }
+    ListNode* mergeList(ListNode* left, ListNode* right){
+        ListNode* newhead = new ListNode(0);
+        ListNode* cur = newhead;
+        while(left && right){
+            if(left->val < right->val){
+                cur->next = left;
+                left = left->next;
+                cur = cur->next;
+            }
+            else{
+                cur->next = right;
+                right = right->next;
+                cur = cur->next;
+            }
+        }
+
+        if(left){
+            cur->next = left;
+        }
+        else{
+            cur->next = right;
+        }
+        return newhead->next;
+    }
+};
+```
