@@ -35,3 +35,22 @@ public:
     }
 };
 ```
+
+用哈希表统计并判断。
+
+```cpp
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        unordered_map<char, int> myhash;
+        for(int i = 0; i < s.size(); i++){
+            myhash[s[i]]++;
+        }
+        unordered_map<char, int> myhash_t;
+        for(int i = 0; i < t.size(); i++){
+            myhash_t[t[i]]++;
+        }
+        return myhash_t == myhash;
+    }
+};
+```
