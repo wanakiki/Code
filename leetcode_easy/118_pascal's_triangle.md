@@ -62,6 +62,29 @@ int** generate(int numRows, int** columnSizes) {
 }
 ```
 
+#### 2020年12月6日
+
+cpp解法
+
+```cpp
+class Solution {
+public:
+    vector<vector<int>> generate(int numRows) {
+        vector<vector<int>> res;
+        int cur = 0;
+        while(cur < numRows){
+            vector<int> nums(cur + 1, 1);
+            int last_level = cur - 1;
+            for(int i = 1; i < cur; i++){
+                nums[i] = res[last_level][i] + res[last_level][i-1];
+            }
+            res.push_back(nums);
+            cur++;
+        }
+        return res;
+    }
+};
+```
 
 
 ## 119. Pascal's Triangle II
