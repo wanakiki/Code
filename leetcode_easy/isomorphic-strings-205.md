@@ -44,3 +44,40 @@ public:
     }
 };
 ```
+
+重点在于维护一个双向且唯一的映射，可以用map进行解题：
+
+```cpp
+class Solution {
+public:
+    bool isIsomorphic(string s, string t) {
+        unordered_map<char, char> hash_s;
+        unordered_map<char, char> hash_t;
+        for(int i = 0; i < s.size(); i++){
+            char cur_s = s[i];
+            char cur_t = t[i];
+
+            if(hash_s.find(cur_s) != hash_s.end()){
+                if(cur_t != hash_s[cur_s]){
+                    return false;
+                }
+            }
+            else{
+                hash_s[cur_s] = cur_t;
+            }
+
+            if(hash_t.find(cur_t) != hash_t.end()){
+                if(cur_s != hash_t[cur_t]){
+                    return false;
+                }
+            }
+            else{
+                hash_t[cur_t] = cur_s;
+            }
+        }
+        return true;
+    }
+};
+```
+
+也可以使用一个哈希表保存单向映射关系，遍历结束之后再看哈希表内是否有冲突（避免两个字母映射到相同字母上）。
