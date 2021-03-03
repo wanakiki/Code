@@ -57,3 +57,35 @@ public:
     }
 };
 ```
+
+2021年3月3日
+
+调用内置函数进行计算：
+
+```cpp
+class Solution {
+public:
+    vector<int> countBits(int num) {
+        vector<int> res;
+        for(int i = 0; i <= num; i++){
+            res.push_back(__builtin_popcount(i));
+        }
+        return res;
+    }
+};
+```
+
+使用动态规划算法，数字i对应的二进制数中1的个数在不考虑最后一位时，是和``int(i/2)``相同的。
+
+```cpp
+class Solution {
+public:
+    vector<int> countBits(int num) {
+        vector<int> res(num + 1);
+        for(int i = 1; i <= num; i++){
+            res[i] = res[i>>1] + (i & 1);   // （i&1)判断最后一位是否为1
+        }
+        return res;
+    }
+};
+```
