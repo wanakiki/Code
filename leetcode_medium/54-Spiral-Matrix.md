@@ -73,3 +73,50 @@ int* spiralOrder(int** matrix, int matrixRowSize, int matrixColSize) {
         }
  ```
 emmmmm,可以通过加空格使自己的代码变得很清楚。🙄
+
+
+```cpp
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        int cur_loop = 1;
+        int m = matrix.size(), n = matrix[0].size();
+        int count = m * n;
+        vector<int> res(count, 0);
+        int cur_index = 0;
+
+        int i = 0, j = 0;
+        while(count){
+            // 向右
+            while(count && j <= n - cur_loop){
+                res[cur_index++] = matrix[i][j++];
+                count--;
+            }
+            i++;j--;
+
+            // 向下
+            while(count && i <= m - cur_loop){
+                res[cur_index++] = matrix[i++][j];
+                count--;
+            }
+            i--;j--;
+
+
+            // 向左 边界稍微不同
+            while(count && j >= cur_loop){
+                res[cur_index++] = matrix[i][j--];
+                count--;
+            }
+
+            // 向上
+            while(count && i > cur_loop){
+                res[cur_index++] = matrix[i--][j];
+                count--;
+            }
+
+            cur_loop++;
+        }
+        return res;
+    }
+};
+```
