@@ -39,3 +39,60 @@ struct ListNode *rotateRight(struct ListNode *head, int k) {
     return newhead;
 }
 ```
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if(!head)   return head;
+
+        // 统计长度
+        int len = 0;
+        ListNode* cur = head;
+        while(cur){
+            len++;
+            cur = cur->next;
+        }
+
+        k %= len;
+        if(k == 0)  return head;
+
+        int new_head_index = len - k - 1;
+        int cur_pos = 0;
+        cur = head;
+        ListNode* new_head;
+
+        // 找到分割位置
+        while(cur){
+            if(new_head_index == cur_pos){
+                new_head = cur->next;
+                cur->next = nullptr;
+                break;
+            }
+            cur = cur->next;
+            cur_pos++;
+        }
+
+        // 拼接原有链表
+        cur = new_head;
+        while(cur->next){
+            cur = cur->next;
+        }
+        cur->next = head;
+        
+        return new_head;
+    }
+};
+```
+
+最好在第一次遍历获取长度的时候就把链表的首尾连接起来。

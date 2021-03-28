@@ -45,3 +45,58 @@ struct ListNode* deleteDuplicates(struct ListNode* head) {
   return newhead->next;
 }
 ```
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        ListNode* newhead = new ListNode(-200);
+        ListNode* cur = newhead;
+        ListNode* last = newhead;
+        bool flag = true;
+        bool need_del = false;
+
+        while(head){
+            if(cur->val == head->val){
+                need_del = true;
+                flag = false;
+            }
+            else{
+                flag = true;
+            }
+
+            if(flag){
+                if(need_del){
+                    cur = head;
+                    last->next = cur;
+                    need_del = false;
+                }
+                else{
+                    cur->next = head;
+                    last = cur;
+                    cur = cur->next;
+                }
+                flag = false;
+            }
+            head = head->next;
+        }
+        // 最后判断
+        if(need_del){
+            last->next = nullptr;
+        }
+        return newhead->next;
+    }
+};
+```
+
+看题解评论有人说得很好，做链表题目一定要舍得用变量，这个题目便是典型的容易绕进去的类型。
