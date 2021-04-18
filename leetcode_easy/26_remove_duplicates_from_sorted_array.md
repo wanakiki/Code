@@ -33,3 +33,23 @@ for(int i=0;i<numsSize;i++){
 return numsSize;
 }
 ```
+
+```cpp
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        if(nums.size() == 0)    return 0;
+        int real_index = 1;
+        for(int i = 1; i < nums.size(); i++){
+            if(nums[i] != nums[i-1]){
+                if(i != real_index){
+                    nums[real_index] = nums[i];
+                }
+                real_index++;
+            }
+        }
+        nums.resize(real_index);
+        return real_index;
+    }
+};
+```
