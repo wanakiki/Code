@@ -42,3 +42,49 @@ int strStr(char*haystack,char*needle){
 ```
 代码有点乱，但是解决了问题，现在还没来得及看别人的方法。
 
+
+kmp算法练习：
+
+```cpp
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        int m = needle.size();
+        if(m == 0)  return 0;
+
+        string s = needle + '#' + haystack;
+        int len = s.size();
+        vector<int> p(len, 0);
+
+        for(int i = 1; i < len; i++){
+            int j = p[i-1];
+            while(1){
+                if(s[i] == s[j]){
+                    p[i] = j + 1;
+                    break;
+                }
+                if(j == 0){
+                    j -= 1;
+                    break;
+                }
+                j = p[j - 1];
+            }
+            if(j < 0){
+                p[i] = 0;
+            }
+            // for(auto c : s){
+            //     cout << c << ' ';
+            // }
+            // cout << endl;
+            // for(auto c : p){
+            //     cout << c << ' ';
+            // }
+            // cout << endl;
+            if(p[i] == m){
+                return i - m * 2;   // i - m + 1 - (m + 1)
+            }
+        }
+        return -1;
+    }
+};
+```
