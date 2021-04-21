@@ -56,3 +56,37 @@ int numDecodings(char* s) {
   return dp[len-1];
 }
 ```
+
+2021年4月21日
+
+今天错了几次之后终于过了，还是使用动态规划方法，可以通过补充两个无用字符来减少特殊情况的处理。需要注意的一点是，对于0这个特殊值，只能与前一个数字构成某种字母，动态规划时需要注意。
+
+```cpp
+class Solution {
+public:
+    int numDecodings(string s) {
+        s = "  " + s;
+        int len = s.size();
+        vector<int> dp(len, 1);
+        for(int i = 2; i < len; i++){
+            if(s[i-1] == '1'){
+                if(s[i] == '0') dp[i] = dp[i-2];
+                else dp[i] = dp[i-1]  + dp[i-2];
+            }
+            else if(s[i-1] == '2' && s[i] < '7'){
+                if(s[i] == '0') dp[i] = dp[i-2];
+                else dp[i] = dp[i-1]  + dp[i-2];
+            }
+            else{
+                if(s[i] == '0'){
+                    return 0;
+                }
+                else{
+                    dp[i] = dp[i-1];
+                }
+            }
+        }
+        return dp[len-1];
+    }
+};
+```
