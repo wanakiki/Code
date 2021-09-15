@@ -75,3 +75,36 @@ public:
     }
 };
 ```
+
+2021年9月15日
+
+重新看到这个题目并没有直接想到二分做法，反而想到了使用分治来解决，分析之后发现分治并不能有效降低时间复杂度，转而尝试二分做法。
+
+左右边界固定的情况下，判断中间节点与其左右两侧节点的大小关系，如果满足峰值元素条件，直接返回索引。如果不满足峰值元素条件，由于相邻两元素之间是不等的，则可能情况有递增、递减、下凹节点三种情况。由于数组两侧均为取值下界，则必然可以在数据上升的方向找到峰值元素。
+
+```cpp
+class Solution {
+public:
+    int findPeakElement(vector<int>& nums) {
+        int left = 0, right = nums.size()  - 1;
+        while(left < right){
+            int mid = left + (right - left) / 2;
+
+            // 判断中间是否为峰值
+            bool check_left = false, check_right = false;
+            if(mid == 0 || nums[mid] > nums[mid - 1])   check_left = true;
+            if(mid == nums.size() - 1 || nums[mid] > nums[mid + 1]) check_right = true;
+
+            if(check_left && check_right)   return mid;
+            else{
+                // 相邻不等 左右必然有一个成立 且可以排除当前mid数据不满足条件
+                if(check_left)  left = mid + 1;
+                else    right = mid - 1;
+            }
+        }
+        return left;
+    }
+};
+```
+
+另外在考虑单次遍历解法时，同样需要考虑到数组两侧隐含数据下界这一因素，在遍历时只需要考虑一侧是否递减即可。
