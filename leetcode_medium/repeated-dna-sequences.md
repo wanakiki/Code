@@ -63,3 +63,63 @@ public:
     }
 };
 ```
+
+2021年10月8日
+
+状态压缩做法，参考官方题解，执行起来快了一些。感觉做题还是不够系统，虽然已经做过了但还是不能很快想起来解决方案。
+
+```cpp
+class Solution {
+public:
+    int char2int(char a){
+        if(a == 'A')    return 0;
+        else if(a == 'C')   return 1;
+        else if(a == 'G')   return 2;
+        else    return 3;
+    }
+    char int2char(int n){
+        if(n == 0)  return 'A';
+        else if(n == 1) return 'C';
+        else if(n == 2) return 'G';
+        else    return 'T';
+    }
+    string int2str(int a){
+        string res(10, '0');
+        for(int i = 9; i >= 0; i--){
+            int cur = a & 3;
+            a >>= 2;
+
+            res[i] = int2char(cur);
+        }
+        return res;
+    }
+    vector<string> findRepeatedDnaSequences(string s) {
+        int cur = 0;
+        int mask = 1048575;
+        unordered_map<int, int> hash;
+        for(int i = 0; i < s.size(); i++){
+            int c = char2int(s[i]);
+
+            if(i < 9){
+                cur <<= 2;
+                cur += c;
+            }
+            else{
+                cur <<= 2;
+                cur &= mask;
+                cur += c;
+
+                hash[cur]++;
+            }
+        }
+
+        vector<string> res;
+        for(auto it = hash.begin(); it != hash.end(); it++){
+            if(it->second > 1){
+                res.push_back(int2str(it->first));
+            }
+        }
+        return res;
+    }
+};
+```
