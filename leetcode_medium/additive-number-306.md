@@ -90,3 +90,47 @@ public:
 ```
 
 不知道为什么``stoll``函数在我的本地无法运行，本地测试的时候换用了``atoi``+``c_str()``的方法。
+
+
+### 2022年1月10日
+
+现在重新做这个题，竟然错了好几次才提交上，然而思路是一样的😅
+
+只能说后面几年是不进反退了
+
+```cpp
+class Solution {
+public:
+    bool helper(string num, long long num1, long long num2, int index){
+        if(index == num.size()) return true;
+        long long num3 = num1 + num2;
+        string num3_str = to_string(num3);
+        int len = num3_str.size();
+
+        string real_num3 = num.substr(index, len);
+        if(num3_str != real_num3)   return false;
+        else    return helper(num, num2, num3, index + len);
+    }
+    bool isAdditiveNumber(string num) {
+        int max_len = num.size() / 2;       // 最长数字的可能
+        long long num1, num2, num3;
+
+        for(int len1 = 1; len1 <= max_len; len1++){
+            // 根据长度截取整数
+            if(len1 != 1 && num[0] == '0')  break;
+            num1 = stoll(num.substr(0, len1));
+
+            for(int len2 = 1; len2 <= max_len; len2++){
+                if(len1 + len2 == num.size())   break;
+                if(len2 != 1 && num[len1] == '0')   break;
+                num2 = stoll(num.substr(len1, len2));
+
+                // 开始递归查找
+                if(helper(num, num1, num2, len1 + len2))    return true;
+                // cout << len1 << ' ' << len2 << endl;
+            }
+        }
+        return false;
+    }
+};
+```
