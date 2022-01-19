@@ -61,3 +61,38 @@ public:
 };
 ```
 实际上用map速度也不是很快
+
+
+#### 2022年1月19日
+
+滑动窗口搭配哈希表，哈希表用于标记元素是否出现。由于需要频繁对哈希表进行增删元素，效率反而不如直接存曾经出现过的值对应的最大索引。
+
+```cpp
+class Solution {
+public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+        if(k >= nums.size())    k = nums.size() - 1;
+        int left = 0;
+        int right = 0;
+        unordered_map<int, int> hash;
+        for(right = 0; right <= k; right++){
+            if(hash.find(nums[right]) != hash.end())    return true;
+            else{
+                hash[nums[right]] = 1;
+            }
+        }
+
+        while(right < nums.size()){
+            hash.erase(hash.find(nums[left]));
+            left++;
+
+            if(hash.find(nums[right]) != hash.end())    return true;
+            else{
+                hash[nums[right]] = 1;
+            }
+            right++;
+        }
+        return false;
+    }
+};
+```
