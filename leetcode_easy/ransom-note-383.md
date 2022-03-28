@@ -47,3 +47,27 @@ public:
     }
 };
 ```
+
+哈希表统计每个字符出现次数。
+
+```cpp
+class Solution {
+public:
+    bool canConstruct(string ransomNote, string magazine) {
+        vector<int> count_a(26, 0);
+        vector<int> count_b(26, 0);
+
+        for(auto s : ransomNote){
+            count_a[s - 'a']++;
+        }
+        for(auto s : magazine){
+            count_b[s - 'a']++;
+        }
+
+        for(int i = 0; i < count_a.size(); i++){
+            if(count_b[i] < count_a[i]) return false;
+        }
+        return true;
+    }
+};
+```

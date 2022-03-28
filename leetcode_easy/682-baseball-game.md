@@ -91,3 +91,37 @@ public:
     }
 };
 ```
+
+2022年3月26日
+
+```cpp
+class Solution {
+public:
+    int calPoints(vector<string>& ops) {
+        vector<int> nums(1000, 0);
+        int real_index = 0;
+        for(auto s : ops){
+            if(s == "C"){
+                real_index--;
+            }
+            else if(s == "D"){
+                nums[real_index] = nums[real_index - 1] * 2;
+                real_index++;
+            }
+            else if(s == "+"){
+                nums[real_index] = nums[real_index - 1] + nums[real_index - 2];
+                real_index++;
+            }
+            else{
+                nums[real_index] = stoi(s);
+                real_index++;
+            }
+        }
+        int res = 0;
+        for(int i = 0; i < real_index; i++){
+            res += nums[i];
+        }
+        return res;
+    }
+};
+```
