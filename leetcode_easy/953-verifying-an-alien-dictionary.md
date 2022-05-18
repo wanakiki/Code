@@ -60,7 +60,7 @@ public:
 
         unordered_map<int,int> hash;
         for(int i = 0; i < order.size(); i++){
-            hash[order[i]] = i + 1;
+            hash[order[i]] = i;
         }
 
         for(int i = 1; i < words.size(); i++){
@@ -68,7 +68,17 @@ public:
             int len_a = words[i].size();
             int len_b = words[i-1].size();
 
-            
+            int index = 0;
+            while(index < min(len_a, len_b)){
+                if(hash[words[i][index]] < hash[words[i-1][index]]){
+                    return false;
+                }
+                else if(hash[words[i][index]] > hash[words[i-1][index]]){
+                    break;
+                }
+                index++;
+            }
+            if(index == min(len_a, len_b) && len_b > len_a)   return false;     // 遍历完所有的字符串之后根据长度比较大小
         }
         return true;
     }
