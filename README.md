@@ -34,3 +34,7 @@ git --config 设置email user
 ## medium
 
 1. water-and-jug-problem ❌ 暴力未通过，set自定义hash函数
+
+单调栈
+
+- https://leetcode-cn.com/problems/sum-of-subarray-minimums/
