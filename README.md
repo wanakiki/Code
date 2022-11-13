@@ -29,3 +29,8 @@ git --config 设置email user
 ## Hard
 
 1.  Longest Valid Parentheses ❌暴力解法（未通过）
+2.  https://leetcode-cn.com/problems/lfu-cache/ 哈希双向表，不理解原理
+
+## medium
+
+1. water-and-jug-problem ❌ 暴力未通过，set自定义hash函数
