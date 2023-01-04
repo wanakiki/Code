@@ -38,3 +38,8 @@ git --config 设置email user
 单调栈
 
 - https://leetcode-cn.com/problems/sum-of-subarray-minimums/
+
+
+数学
+
+- https://leetcode.cn/problems/reach-a-number/
