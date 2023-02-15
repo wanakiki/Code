@@ -62,3 +62,35 @@ int main()
     puts(b);
 }
 ```
+
+2022年3月1日，CPP解法
+
+```cpp
+class Solution {
+public:
+    string convert(string s, int numRows) {
+        if(numRows == 1)    return s;
+        string res(s.size(), '0');
+        int index = 0;
+        int loop_len = numRows * 2 - 2;
+        for(int i = 0; i < numRows; i++){
+            int s_index = i;
+            while(s_index < s.size()){
+                if(i == 0 || i == numRows - 1){
+                    if(s_index >= s.size()) break;
+                    res[index++] = s[s_index];
+                }
+                else{
+                    if(s_index >= s.size()) break;
+                    res[index++] = s[s_index];
+                    if(s_index + (numRows - i - 1) * 2 >= s.size()) break;
+                    res[index++] = s[s_index + (numRows - i - 1) * 2];
+                }
+                s_index += loop_len;
+                cout << res << endl;
+            }
+        }
+        return res;
+    }
+};
+```
