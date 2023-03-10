@@ -108,8 +108,20 @@ def get_problem_content(slug):
         print(content)
         print(res)
 
+def get_daily_slug() -> str:
+    """获取每日一题的slug"""
+    # https://blog.csdn.net/malloc_can/article/details/113004579
+    response = requests.post("https://leetcode-cn.com/graphql", json={
+        "operationName": "questionOfToday",
+        "variables": {},
+        "query": "query questionOfToday { todayRecord {   question {     questionFrontendId     questionTitleSlug     __typename   }   lastSubmission {     id     __typename   }   date   userStatus   __typename }}"
+    })
+    daily_slug = json.loads(response.text).get('data').get('todayRecord')[0].get("question").get('questionTitleSlug')
+    
+    return daily_slug
 
 str = "https://leetcode-cn.com/problems/remove-k-digits/"
 str = str.split('/')[-2]
-get_problem_content("sign-of-the-product-of-an-array")
-
+# print(get_daily_slug())
+# get_problem_content("minimum-recolors-to-get-k-consecutive-black-blocks")
+get_problem_content(slug=get_daily_slug())
